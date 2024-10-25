@@ -20,7 +20,9 @@ class ArticleDetailController extends GetxController {
     super.onClose();
   }
 
-  WebViewController webViewController(String uri) { 
-   return WebViewController()..setJavaScriptMode(JavaScriptMode.unrestricted)..loadRequest(Uri.parse(uri));
+  WebViewController webViewController(String uri) {
+    return WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse(uri));
   }
 }

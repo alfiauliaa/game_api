@@ -1,82 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../data/models/article.dart'; // Ensure this points to the right model file
+import 'package:flutter/material.dart';
+import '../../../data/models/article.dart';
 import '../controllers/article_detail_controller.dart';
 import 'article_detail_web_view.dart';
 
 class ArticleDetailPage extends GetView<ArticleDetailController> {
-  final Articles article; // Change from Article to Articles
+  final Articles article;
+
   const ArticleDetailPage({Key? key, required this.article}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('News App'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Hero(
-              tag: article.thumbnail ??
-                  article.title, // Changed urlToImage to thumbnail
-              child: article.thumbnail != null
-                  ? Image.network(
-                      article.thumbnail, // Use thumbnail
-                      fit: BoxFit.cover,
-                    )
-                  : Container(
-                      color: Colors.grey,
-                      child: const Center(
-                        child: Text(
-                          'No Image',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300,
+            floating: false,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(article.title),
+              background: Image.network(
+                article.thumbnail,
+                fit: BoxFit.cover,
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(10),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    article.shortDescription ?? "-", // Use shortDescription
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    article.shortDescription,
+                    style: TextStyle(fontSize: 18, color: Colors.grey[300]),
                   ),
-                  const Divider(color: Colors.grey),
-                  Text(
-                    article.title,
-                    style: Theme.of(context).textTheme.titleLarge,
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Chip(
+                        label: Text(article.genre.toString().split('.').last),
+                        backgroundColor: const Color.fromARGB(255, 204, 57, 57),
+                      ),
+                      Chip(
+                        label:
+                            Text(article.platform.toString().split('.').last),
+                        backgroundColor: Colors.grey.shade800,
+                      ),
+                    ],
                   ),
-                  const Divider(color: Colors.grey),
-                  Text(
-                    'Release Date: ${article.releaseDate}', // Changed to releaseDate
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Publisher: ${article.publisher}', // Changed to publisher
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  const Divider(color: Colors.grey),
-                  Text(
-                    article.shortDescription ?? "-", // Use shortDescription
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 20),
+                  Text('Publisher: ${article.publisher}'),
+                  Text('Developer: ${article.developer}'),
+                  Text('Release Date: ${article.releaseDate}'),
+                  SizedBox(height: 20),
                   ElevatedButton(
-                    child: const Text('Read more'),
+                    child: Text('Read More'),
                     onPressed: () {
                       Get.to(() => ArticleDetailWebView(article: article));
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 204, 57, 57),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

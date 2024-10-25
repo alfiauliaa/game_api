@@ -23,7 +23,7 @@ class AppPages {
     ),
     GetPage(
         name: _Paths.GETCONNECT,
-        page: () => const GetConnectView(),
+        page: () => GetConnectView(),
         binding: GetConnectBinding()),
     GetPage(
         name: _Paths.ARTICLE_DETAILS,
